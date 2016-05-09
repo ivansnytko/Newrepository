@@ -1,4 +1,4 @@
-package dao.myBatis;
+package DAO.myBatis;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -10,7 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import dao.IInfo;
+import DAO.IInfo;
 import model.Firm;
 import model.Info;
 
@@ -24,8 +24,8 @@ public class InfoImpl implements IInfo {
 			SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
 			session = sqlSessionFactory.openSession();
 			session.insert("Info.insert", info);
-		} finally {
 			session.commit();
+		} finally {
 			session.close();
 		}
 	}

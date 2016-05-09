@@ -1,4 +1,4 @@
-package dao.myBatis;
+package DAO.myBatis;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -9,7 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import dao.IStates;
+import DAO.IStates;
 import model.Firm;
 import model.States;
 
@@ -21,8 +21,8 @@ public class StatesImpl implements IStates {
 			SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
 			session = sqlSessionFactory.openSession();
 			session.insert("States.insert", states);
-		} finally {
 			session.commit();
+		} finally {
 			session.close();
 		}
 	}

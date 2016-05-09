@@ -1,20 +1,26 @@
 package parser;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBException;
 
-import dao.myBatis.Select;
+import java.sql.Connection;
+
+import DAO.ConnectionPool;
+import DAO.JDBC.*;
+
 import model.Firm;
 import model.IAPDFirmSECReport;
 import parser.jaxbParser.JaxbParser;
 import parser.parserDOM.DOMParser;
-import dao.dao.*;
 
 
 public class Main {
@@ -24,12 +30,15 @@ public class Main {
 			ArrayList<Firm> listfirm = new ArrayList<Firm>();
 			
 			File file = new File("src//main/resources/test_ng_full.xml");
-			//JaxbParser parser = new JaxbParser();
-			DOMParser parser = new DOMParser();
+			JaxbParser parser = new JaxbParser();
+			//DOMParser parser = new DOMParser();
 			IAPDFirmSECReport iAPDFirmSECReport = (IAPDFirmSECReport) parser.getObject(file, IAPDFirmSECReport.class);
 			int a = 50;
 			listfirm = iAPDFirmSECReport.getFirms().getListFirms();
-			//dao import dao.dao.*;
+			//dao import DAO.JDBC.*;
+			
+			Main m = new Main();
+			m.init();
 			InfoImpl insertinfo = new InfoImpl();		
 			insertinfo.insertInfo(listfirm,a, null);
 			MainAddrImpl insertMainAddr = new MainAddrImpl();
@@ -40,12 +49,12 @@ public class Main {
 			insertRgstn.insertRgstn(listfirm, a, null);
 			StatesImpl insertStates = new StatesImpl();
 			insertStates.insertStates(listfirm, a, null);
-			Select selectinfo = new Select();
+			FirmsImpl selectinfo = new FirmsImpl();
 			selectinfo.selectInfo();
 			selectinfo.selectAllById();
 			
 			
-			//import dao.myBatis.*;
+			//import DAO.myBatis.*;
 			/*InfoImpl infoImpl = new InfoImpl();
 			MainAddrImpl mainAddrImpl = new MainAddrImpl();
 			FilingImpl filingImpl = new FilingImpl();
@@ -64,7 +73,7 @@ public class Main {
 					statesImpl.insertStates(listfirm, a, listfirm.get(i).getNoticefiled().getListStates().get(j));
 				}	
 			}
-			Select selectinfo = new Select();
+			FirmsImpl selectinfo = new FirmsImpl();
 			selectinfo.selectInfo();
 			selectinfo.selectAllById();*/
 		} catch (JAXBException ex) {
@@ -72,5 +81,40 @@ public class Main {
 		}
 
 	}
+	
+	
+	private void init() throws FileNotFoundException, IOException {
+		Properties prop = new Properties();
+		prop.load(new FileInputStream("src/main/resources/database.properties"));
+		String user = prop.getProperty("user");
+		String password = prop.getProperty("password");
+		String url = prop.getProperty("url");
+		String driver = prop.getProperty("driver");
+		ConnectionPool pool = ConnectionPool.getInstance();
+		pool.setUsername(user);
+		pool.setPassword(password);
+		pool.setPath(url);
+		pool.setClassName(driver);
+		pool.setPoolsize(10);
+		if (!pool.init())
+			System.exit(100);
+	}
+	
+	public Connection getConnection() throws FileNotFoundException,
+			IOException {
+		Connection conn1 = ConnectionPool.getConnection();
+		return conn1;
+	}
+
+	public void releaseConnection(Connection conn) {
+		ConnectionPool.releaseConnection(conn);
+	}
+
+	
+	
+	
+	
+	
+	
 
 }

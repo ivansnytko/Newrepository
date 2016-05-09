@@ -13,7 +13,6 @@ public class Firm {
 	private Rgstn rgstn;
 	private NoticeFiled noticefiled;
 	private Filing filing;
-	private FormInfo forminfo;
 
 	public Info getInfo() {
 		return info;
@@ -32,8 +31,6 @@ public class Firm {
 	public void setMainaddr(MainAddr mainaddr) {
 		this.mainaddr = mainaddr;
 	}
-
-
 
 	public Rgstn getRgstn() {
 		return rgstn;
@@ -60,15 +57,6 @@ public class Firm {
 	@XmlElement(name = "Filing")
 	public void setFiling(Filing filing) {
 		this.filing = filing;
-	}
-
-	public FormInfo getForminfo() {
-		return forminfo;
-	}
-
-	@XmlElement(name = "FormInfo")
-	public void setForminfo(FormInfo forminfo) {
-		this.forminfo = forminfo;
 	}
 
 }

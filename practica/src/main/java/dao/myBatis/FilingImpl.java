@@ -1,4 +1,4 @@
-package dao.myBatis;
+package DAO.myBatis;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -9,7 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import dao.IFiling;
+import DAO.IFiling;
 import model.Filing;
 import model.Firm;
 
@@ -21,8 +21,8 @@ public class FilingImpl implements IFiling {
 			SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
 			session = sqlSessionFactory.openSession();
 			session.insert("Filing.insert", filing);
-		} finally {
 			session.commit();
+		} finally {
 			session.close();
 		}
 	}

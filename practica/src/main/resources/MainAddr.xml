@@ -14,13 +14,9 @@
    </insert>
     <resultMap id = "result" type = "MainAddr">
     </resultMap>
-   	<select id = "getAll" resultMap = "result">
-    SELECT * FROM info 
-	Inner join filing on info.info_id=filing.info_id
-	Inner join mainaddr on info.info_id=mainaddr.info_id
-	Inner join rgstn on info.info_id=rgstn.info_id
-	Inner join states on info.info_id=states.info_id
-	where info.info_id = 2
+   	<select id = "getAll" parameterType = "int" resultMap = "result">
+    SELECT * FROM mainaddr 
+	where mainaddr.info_id = #{id}
    </select>
     	
 </mapper>

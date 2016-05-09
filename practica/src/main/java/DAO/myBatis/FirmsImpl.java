@@ -1,4 +1,4 @@
-package dao.myBatis;
+package DAO.myBatis;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -14,8 +14,8 @@ import model.Info;
 import model.MainAddr;
 import model.States;
 
-public class Select {
-	public static Logger log = Logger.getLogger(Select.class.getName());
+public class FirmsImpl {
+	public static Logger log = Logger.getLogger(FirmsImpl.class.getName());
 
 	public void selectInfo() throws IOException {
 		SqlSession session = null;
@@ -29,8 +29,8 @@ public class Select {
 			List<Integer> abc = session.selectList("Info.getCount");
 			for (int i = 0; i < info.size(); i++)
 				log.info(info.get(i).getLegalNm() + " " + abc.get(i).intValue());
-		} finally {
 			session.commit();
+		} finally {
 			session.close();
 		}
 	}
@@ -41,16 +41,16 @@ public class Select {
 			Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
 			SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
 			session = sqlSessionFactory.openSession();
-			List<States> states = session.selectList("States.getAll");
-			List<Info> info = session.selectList("Info.getAll");
-			List<MainAddr> mainaddr = session.selectList("MainAddr.getAll");
+			List<States> states = session.selectList("States.getAll",2);
+			List<Info> info = session.selectList("Info.getAll",2);
+			List<MainAddr> mainaddr = session.selectList("MainAddr.getAll",2);
 			for (int i = 0; i < info.size(); i++) {
 				log.info(info.get(i).getLegalNm() + " " + info.get(i).getFirmCrdNb() + " " + mainaddr.get(i).getStrt1()
-						+ " " + states.get(i).getRgltrCd());
-
+						+ " ");
+				for (int j = 0; j<states.size();j++) log.info(states.get(j).getRgltrCd());
 			}
-		} finally {
 			session.commit();
+		} finally {
 			session.close();
 		}
 	}

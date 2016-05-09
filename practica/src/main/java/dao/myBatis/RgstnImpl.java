@@ -1,4 +1,4 @@
-package dao.myBatis;
+package DAO.myBatis;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -9,7 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import dao.IRgstn;
+import DAO.IRgstn;
 import model.Firm;
 import model.Rgstn;
 
@@ -21,8 +21,8 @@ public class RgstnImpl implements IRgstn{
 			SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
 			session = sqlSessionFactory.openSession();
 			session.insert("Rgstn.insert", rgstn);
-		} finally {
 			session.commit();
+		} finally {
 			session.close();
 		}
 	}
