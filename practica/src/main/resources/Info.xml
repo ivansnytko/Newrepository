@@ -1,0 +1,47 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace = "Info">
+
+   <insert id = "insert" parameterType = "Info">
+      INSERT INTO info (sECRgnCD, firmCrdNb, sECNb, busNm, legalNm) VALUES (#{sECRgnCD}, #{firmCrdNb}, #{sECNb}, #{busNm}, #{legalNm});
+			
+      <selectKey keyProperty = "info_id" resultType = "int" order = "AFTER">
+         select last_insert_id() as id
+      </selectKey>   
+			
+   </insert>
+    <resultMap id = "result" type = "Info">
+    </resultMap>
+	
+   <select id = "get" resultMap = "result">
+      SELECT * FROM info; 
+   </select>
+    
+   <select id = "getById" parameterType = "int" resultMap = "result">
+      SELECT * FROM info WHERE ID = #{id};
+   </select>
+
+   <select id = "getStates" resultMap = "result">
+    Select legalNm, count(states.info_id)
+	from info
+	INNER Join states
+ 	On info.info_id = states.info_id
+ 	Group by states.info_id
+ 	Having count(states.info_id) >= 2 
+   </select>
+    <select id="getCount" resultType="int">
+	SELECT count(info_id) FROM states
+	Group by info_id
+ 	Having count(info_id) >= 2
+	</select>
+	<select id = "getAll" resultMap = "result">
+    SELECT * FROM info 
+	Inner join filing on info.info_id=filing.info_id
+	Inner join mainaddr on info.info_id=mainaddr.info_id
+	Inner join rgstn on info.info_id=rgstn.info_id
+	Inner join states on info.info_id=states.info_id
+	where info.info_id = 2
+   </select>
+</mapper>

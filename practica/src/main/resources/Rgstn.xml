@@ -1,0 +1,16 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace = "Rgstn">
+
+   <insert id = "insert" parameterType = "Rgstn">
+      INSERT INTO rgstn (firmtype, st, dt, info_id) VALUES (#{firmtype}, #{st}, #{dt}, #{info_id});
+			
+      <selectKey keyProperty = "id_rgstn" resultType = "int" order = "AFTER">
+         select last_insert_id() as id
+      </selectKey>   
+			
+   </insert>
+    	
+</mapper>

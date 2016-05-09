@@ -1,0 +1,26 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace = "MainAddr">
+
+   <insert id = "insert" parameterType = "MainAddr">
+      INSERT INTO mainAddr (strt1, strt2, city, state, cntry, postlCd, phNb, faxNb, info_id) VALUES (#{strt1}, #{strt2}, #{city}, #{state}, #{cntry}, #{postlCd}, #{phNb}, #{faxNb}, #{info_id});
+			
+      <selectKey keyProperty = "id" resultType = "int" order = "AFTER">
+         select last_insert_id() as id
+      </selectKey>   
+			
+   </insert>
+    <resultMap id = "result" type = "MainAddr">
+    </resultMap>
+   	<select id = "getAll" resultMap = "result">
+    SELECT * FROM info 
+	Inner join filing on info.info_id=filing.info_id
+	Inner join mainaddr on info.info_id=mainaddr.info_id
+	Inner join rgstn on info.info_id=rgstn.info_id
+	Inner join states on info.info_id=states.info_id
+	where info.info_id = 2
+   </select>
+    	
+</mapper>
